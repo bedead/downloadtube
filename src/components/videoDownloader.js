@@ -75,10 +75,13 @@ export default function VideoDownloader() {
 
 
     return (
-        <div className="flex min-h-screen flex-col items-center p-5 pt-10 md:p-24">
+        <div className="flex min-h-screen flex-col items-center p-5 pt-24 md:p-24">
             <div className="items-center p-5">
-                <h1 className="font-semibold text-4xl">DownloadTube</h1>
-                <p className="font-semibold">No bullshit youtube video and audio downloader</p>
+                <h1 className="font-semibold text-4xl text-center flex justify-center space-x-2 items-center">DownloadTube
+                    <span> {' '}</span>
+                    <span className='text-gray-800 px-1 text-2xl md:text-3xl text-center rounded-xl bg-white '>BETA</span>
+                </h1>
+                <p className="font-semibold text-center mt-2 md:mt-0">No bullshit youtube video and audio downloader</p>
             </div>
             <div className="p-2 w-full flex items-center justify-center relative">
                 <input
@@ -89,7 +92,7 @@ export default function VideoDownloader() {
                     className="w-auto md:w-[50%] border-separate border-[2px] rounded-lg py-3 px-3 bg-gray-950 border-indigo-600 placeholder-white-500 text-white"
                 />
             </div >
-            <button className='bg-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-800 active:bg-indigo-800' onClick={handleDownload}>Download</button>
+            <button type='button' className='bg-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-800 active:bg-indigo-800' onClick={handleDownload}>Download</button>
 
 
             <div className='flex flex-wrap md:flex-nowrap justify-center md:space-x-4'>
