@@ -5,7 +5,8 @@ import { useState } from 'react';
 
 export default function VideoDownloader() {
     const [videoUrl, setVideoUrl] = useState('');
-    const [downloadOptions, setDownloadOptions] = useState([]);
+    const [videoFormats, setVideoFormats] = useState([]);
+    const [audioFormats, setAudioFormats] = useState([]);
     const [error, setError] = useState(null);
     const [showErrorModal, setShowErrorModal] = useState(false);
 
@@ -29,8 +30,9 @@ export default function VideoDownloader() {
             }
 
             const data = await response.json();
+            setVideoFormats(data.videoFormats);
+            setAudioFormats(data.audioFormats);
 
-            setDownloadOptions(data.formats);
             setError(null);
         } catch (error) {
             console.error('Error fetching video info:', error);
@@ -67,12 +69,16 @@ export default function VideoDownloader() {
         }
     };
 
+    const closeErrorModal = () => {
+        setShowErrorModal(false);
+    };
+
 
     return (
         <div className="flex min-h-screen flex-col items-center p-5 pt-10 md:p-24">
             <div className="items-center p-5">
                 <h1 className="font-semibold text-4xl">DownloadTube</h1>
-                <p className="font-semibold">No bullshit youtube video downloader</p>
+                <p className="font-semibold">No bullshit youtube video and audio downloader</p>
             </div>
             <div className="p-2 w-full flex items-center justify-center relative">
                 <input
@@ -83,31 +89,49 @@ export default function VideoDownloader() {
                     className="w-auto md:w-[50%] border-separate border-[2px] rounded-lg py-3 px-3 bg-gray-950 border-indigo-600 placeholder-white-500 text-white"
                 />
             </div >
-            <button className='bg-indigo-600 px-3 py-2 rounded-lg ' onClick={handleDownload}>Download</button>
-            {downloadOptions.length > 0 && (
-                <div className='mt-5 text-center mx-auto'>
-                    <h3 className='font-semibold text-xl my-2'>Download Options:</h3>
-                    <ul className='flex justify-center flex-row'>
-                        {downloadOptions.map((format, index) => (
-                            <li className='w-[80%] md:w-auto border-indigo-600 border-separate border-[2px] px-3 py-1 rounded-lg' key={index}>
-                                {format.qualityLabel} - {format.mimeType} {' '}
-                                <button className='px-3 py-2 rounded-lg text-white bg-indigo-600' onClick={() => handleDownloadClick(format)}>
-                                    Download Now
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+            <button className='bg-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-800 active:bg-indigo-800' onClick={handleDownload}>Download</button>
+
+
+            <div className='flex flex-wrap md:flex-nowrap justify-center md:space-x-4'>
+                {videoFormats.length > 0 && (
+                    <div className='mt-5'>
+                        <h3 className='font-semibold text-xl my-2 text-center'>Video Formats:</h3>
+                        <ul className='space-y-2 items-center'>
+                            {videoFormats.map((format, index) => (
+                                <li className='flex justify-between text-[10px] border-indigo-600 border-separate border-[2px] round px-2 py-1 rounded-lg' key={index}>
+                                    <p>{format.qualityLabel} - {format.mimeType} {' '}</p>
+                                    <button className='px-3 py-2 rounded-lg bg-indigo-600' onClick={() => handleDownloadClick(format)}>
+                                        Download Now
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+                {audioFormats.length > 0 && (
+                    <div className='mt-5'>
+                        <h3 className='font-semibold text-xl my-2 text-center'>Audio Formats:</h3>
+                        <ul className='space-y-2 items-center'>
+                            {audioFormats.map((format, index) => (
+                                <li className='flex justify-between text-[10px] border-indigo-600 border-separate border-[2px] round px-2 py-1 rounded-lg' key={index}>
+                                    <p>{format.qualityLabel} - {format.mimeType} {' '}</p>
+                                    <button className='px-3 py-2 rounded-lg bg-indigo-600' onClick={() => handleDownloadClick(format)}>
+                                        Download Now
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
 
             {/* Error Modal */}
             {showErrorModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-8 rounded-md">
-                        <h2 className="text-xl font-semibold mb-4">Error</h2>
-                        <p className="text-red-600">{error}</p>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+                    <div className="flex flex-row space-x-5 justify-center items-center bg-black border-indigo-600 border-separate border-[2px] p-4 md:p-8 rounded-lg">
+                        <p className="text-red-600 md:text-xl">{error}</p>
                         <button
-                            className="bg-indigo-600 text-white px-4 py-2 rounded-md mt-4"
+                            className="bg-indigo-600 text-white px-4 py-2 rounded-md"
                             onClick={closeErrorModal}
                         >
                             Close
