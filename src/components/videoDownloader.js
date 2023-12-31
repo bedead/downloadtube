@@ -75,7 +75,7 @@ export default function VideoDownloader() {
 
 
     return (
-        <div className="flex min-h-screen flex-col items-center p-5 pt-24 md:p-24">
+        <main className="flex min-h-screen flex-col items-center p-8 pt-40 md:p-40">
             <div className="items-center p-5">
                 <h1 className="font-semibold text-4xl text-center flex justify-center space-x-2 items-center">DownloadTube
                     <span> {' '}</span>
@@ -142,6 +142,6 @@ export default function VideoDownloader() {
                     </div>
                 </div>
             )}
-        </div>
+        </main>
     )
 }

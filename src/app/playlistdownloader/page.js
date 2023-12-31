@@ -3,24 +3,24 @@ import NavBar from "@/components/navbar"
 import { styles } from "../style"
 
 export const metadata = {
-    title: 'About DownloadTube',
-    description: 'Learn more about DownloadTube',
+    title: 'DownloadTube - Playlist Downloader',
+    description: '',
 }
 
-function AboutComp() {
+function DownloaderComp() {
     return (
-        <div className={`${styles.padding} `} >
+        <div className={`${styles.padding}`} >
             Comming Soon
         </div>
     )
 }
 
-export default function About() {
+export default function PlaylistDownloader() {
     return (
         <>
             <NavBar />
-            <AboutComp />
-            <Footer />
+            <DownloaderComp />
+            < Footer />
         </>
     )
 }

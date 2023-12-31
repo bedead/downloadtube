@@ -3,13 +3,13 @@ import NavBar from "@/components/navbar"
 import { styles } from "../style"
 
 export const metadata = {
-    title: 'About DownloadTube',
-    description: 'Learn more about DownloadTube',
+    title: 'DownloadTube - ContactUs',
+    description: '',
 }
 
-function AboutComp() {
+function ContactComp() {
     return (
-        <div className={`${styles.padding} `} >
+        <div className={`${styles.padding}`} >
             Comming Soon
         </div>
     )
@@ -19,7 +19,7 @@ export default function About() {
     return (
         <>
             <NavBar />
-            <AboutComp />
+            <ContactComp />
             <Footer />
         </>
     )

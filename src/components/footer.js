@@ -1,10 +1,11 @@
-'use client'
+import { styles } from "@/app/style";
 
-
-export default function Footer(){
+export default function Footer() {
     return (
         <footer>
-            Footer
+            <div className={`${styles.padding}  text-center`}>
+                Footer
+            </div>
         </footer>
     )
 }
