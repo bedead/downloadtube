@@ -9,7 +9,7 @@ export const metadata = {
 
 function GuideComp() {
     return (
-        <div className={`${styles.padding} min-h-screen md:px-96 space-y-10 text-left `} >
+        <div className={`${styles.padding}` `min-h-screen md:px-96 space-y-10 text-left`} >
             <h1 className="font-bold text-3xl text-center">DownloadTube: YouTube Video Downloader Guide</h1>
             <div>
                 <h2 className="font-semibold text-2xl ">1. Visit the DownloadTube Website:</h2>
@@ -66,4 +66,4 @@ export default function useVideoDownloader() {
             <Footer />
         </>
     )
-}
+};

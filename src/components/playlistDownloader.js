@@ -1,5 +1,6 @@
 // components/PlaylistDownloader.js
 'use client'
+import Image from 'next/image';
 import { useState } from 'react';
 
 
@@ -46,7 +47,7 @@ const PlaylistDownloader = () => {
                 {videos.map((video) => (
                     <li key={video.videoId}>
                         <a href={video.url} target="_blank" rel="noopener noreferrer">
-                            <img src={video.thumbnail} alt={video.title} />
+                            <Image src={video.thumbnail} alt={video.title} />
                             {video.title}
                         </a>
                     </li>
