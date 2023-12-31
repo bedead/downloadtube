@@ -1,4 +1,5 @@
 import { styles } from "@/app/style"
+import CommingSoon from "@/components/commingsoon"
 import Footer from "@/components/footer"
 import NavBar from "@/components/navbar"
 
@@ -19,7 +20,8 @@ export default function PlaylistDownloader() {
     return (
         <>
             <NavBar />
-            <DownloaderComp />
+            {/* <DownloaderComp /> */}
+            <CommingSoon />
             <Footer />
         </>
     )

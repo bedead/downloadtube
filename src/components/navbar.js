@@ -23,7 +23,10 @@ export default function NavBar() {
         <nav className="w-full flex p-10 fixed top-0 z-20 bg-gradient-to-b from-white to-black">
             <div className="w-full flex justify-between items-center mx-auto">
                 <h1 className="font-extrabold text-xl md:text-2xl">
-                    <Link href='/' >DownloadTube</Link>
+                    <Link href='/' >DownloadTube
+                        <span> </span>
+                        <span className='text-gray-800 px-2 text-xl md:text-2xl text-center rounded-xl bg-white '>BETA</span>
+                    </Link>
                 </h1>
                 <div>
                     <div className="cursor-pointer md:text-2xl" onClick={toggleMobileNav}>
