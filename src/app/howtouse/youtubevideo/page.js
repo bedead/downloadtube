@@ -20,7 +20,7 @@ function GuideComp() {
                 <p>On the homepage, you'll find an input field. Paste the YouTube video URL that you want to download into this field.</p>
             </div>
             <div>
-                <h2 className="font-semibold text-2xl ">3. Click "Download":</h2>
+                <h2 className="font-semibold text-2xl ">3. Click &quot;Download&quot;:</h2>
                 <p>Once you've entered the video URL, click the "Download" button.</p>
             </div>
             <div>
@@ -32,7 +32,7 @@ function GuideComp() {
                 <p>Choose the desired download option for either video or audio. Each option will display the resolution, format, and other details.</p>
             </div>
             <div>
-                <h2 className="font-semibold text-2xl ">6. Click "Download" Button:</h2>
+                <h2 className="font-semibold text-2xl ">6. Click &quot;Download&quot; Button:</h2>
                 <p>After selecting an option, click the "Download" button next to it. This will initiate the download process.</p>
             </div>
             <div>

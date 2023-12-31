@@ -26,9 +26,9 @@ export default function NavBar() {
                     <Link href='/' >DownloadTube</Link>
                 </h1>
                 <div>
-                    <span onClick={toggleMobileNav}>
+                    <div className="cursor-pointer md:text-2xl" onClick={toggleMobileNav}>
                         ||||
-                    </span>
+                    </div>
                     <div id="hidden_mobile_nav" className="hidden absolute top-full right-10 rounded-xl font-semibold text-md bg-black p-4 border-[2px] border-separate border-indigo-600 shadow-lg">
                         <ul className="flex flex-col space-y-2">
                             {pages.map((page) => (
