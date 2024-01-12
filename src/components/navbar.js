@@ -24,7 +24,7 @@ const NavBar = () => {
     };
 
     return (
-        <nav className="w-full flex p-10 fixed top-0 z-20 bg-gradient-to-b from-white to-black">
+        <nav className="w-full flex p-10 fixed top-0 z-20 bg-gradient-to-b from-white to-transparent">
             <div className="w-full flex justify-between items-center mx-auto">
                 <h1 className="font-extrabold text-xl md:text-2xl">
                     <Link href="/">
@@ -63,7 +63,7 @@ const NavBar = () => {
                                     >
                                         <Link href={page.path}>
                                             <motion.span
-                                                whileHover={{ color: 'indigo' }}
+                                                whileHover={{ color: 'gray' }}
                                                 whileTap={{ scale: 0.9 }}
                                             >
                                                 {page.name}

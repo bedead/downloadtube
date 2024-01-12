@@ -9,6 +9,7 @@ export default function VideoDownloader() {
     const [audioFormats, setAudioFormats] = useState([]);
     const [error, setError] = useState(null);
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [videoInfo, setVideoInfo] = useState(null);
 
     const handleDownload = async () => {
         try {
@@ -26,8 +27,17 @@ export default function VideoDownloader() {
             const response = await fetch(`/api/youtubevideo?videoId=${videoId}`);
 
             if (!response.ok) {
+                throw new Error('Failed to fetch video download Formats');
+            }
+
+            const responseVideoInfo = await fetch(`/api/youtubeinfo?videoUrl=${videoUrl}`);
+
+            if (!responseVideoInfo.ok) {
                 throw new Error('Failed to fetch video info');
             }
+
+            const datavideoIndo = await responseVideoInfo.json();
+            setVideoInfo(datavideoIndo);
 
             const data = await response.json();
             setVideoFormats(data.videoFormats);
@@ -76,6 +86,8 @@ export default function VideoDownloader() {
 
     return (
         <main className="flex min-h-screen flex-col items-center p-8 pt-40 md:p-40">
+
+            {/* Top link header, input, and button */}
             <div className="items-center p-5">
                 <h1 className="font-semibold text-4xl text-center flex justify-center space-x-2 items-center">DownloadTube
                     <span> {' '}</span>
@@ -94,7 +106,24 @@ export default function VideoDownloader() {
             </div >
             <button type='button' className='bg-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-800 active:bg-indigo-800' onClick={handleDownload}>Download</button>
 
+            {/* Display video title and thumbnail */}
+            {videoInfo && (
+                <div className="mt-5">
+                    <h3 className="font-semibold text-xl my-2 text-center">
+                        Video Information:
+                    </h3>
+                    <div className="flex flex-col items-center">
+                        <p className="text-white mb-2 ">{videoInfo.title}</p>
+                        <img
+                            src={videoInfo.thumbnail}
+                            alt="Video Thumbnail"
+                            className="rounded-lg mb-2 w-full"
+                        />
+                    </div>
+                </div>
+            )}
 
+            {/* video and audio download options */}
             <div className='flex flex-wrap md:flex-nowrap justify-center md:space-x-4'>
                 {videoFormats.length > 0 && (
                     <div className='mt-5'>
