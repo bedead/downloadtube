@@ -4,6 +4,26 @@
 
 
 html {
-    background-color: black;
+    background-color: rgb(22, 22, 30);
     color: whitesmoke;
+}
+
+/* Add this CSS in your global styles or component-specific styles */
+
+.shimmer-loading-animation {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
 }

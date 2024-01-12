@@ -1,7 +1,9 @@
 // components/VideoDownloader.js
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { ShimmerTitle, ShimmerThumbnail } from "react-shimmer-effects";
 
 export default function VideoDownloader() {
     const [videoUrl, setVideoUrl] = useState('');
@@ -10,9 +12,12 @@ export default function VideoDownloader() {
     const [error, setError] = useState(null);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [videoInfo, setVideoInfo] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [showFormats, setShowFormats] = useState(false);
 
     const handleDownload = async () => {
         try {
+            setLoading(true);
             const videoIdMatch = videoUrl.match(/[?&]v=([^&]+)/);
 
             if (!videoIdMatch) {
@@ -44,12 +49,26 @@ export default function VideoDownloader() {
             setAudioFormats(data.audioFormats);
 
             setError(null);
+            setLoading(false);
+            setShowFormats(false); // Reset showFormats on each download
         } catch (error) {
             console.error('Error fetching video info:', error);
             setError('Error fetching video info');
             setShowErrorModal(true);
+            setLoading(false);
         }
     };
+
+    // Use useEffect to control the showFormats state after a delay
+    useEffect(() => {
+        if (videoInfo) {
+            const showFormatsTimeout = setTimeout(() => {
+                setShowFormats(true);
+            }, 1500);
+
+            return () => clearTimeout(showFormatsTimeout);
+        }
+    }, [videoInfo]);
 
     const handleDownloadClick = (format) => {
         try {
@@ -85,7 +104,7 @@ export default function VideoDownloader() {
 
 
     return (
-        <main className="flex min-h-screen flex-col items-center p-8 pt-40 md:p-40">
+        <main className="flex min-h-screen flex-col items-center p-8 pt-32 md:p-30">
 
             {/* Top link header, input, and button */}
             <div className="items-center p-5">
@@ -106,54 +125,73 @@ export default function VideoDownloader() {
             </div >
             <button type='button' className='bg-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-800 active:bg-indigo-800' onClick={handleDownload}>Download</button>
 
-            {/* Display video title and thumbnail */}
-            {videoInfo && (
-                <div className="mt-5">
+            {/* Display video title and thumbnail with shimmer loading effect */}
+            {videoInfo ? (
+                <div className={`mt-5 ${loading ? 'opacity-0' : 'opacity-100 transition-opacity'}`}>
                     <h3 className="font-semibold text-xl my-2 text-center">
-                        Video Information:
+                        <motion.div
+                            whileHover={{ filter: 'brightness(1.1)' }}
+                            whileTap={{ filter: 'brightness(0.9)' }}
+                        >
+                            {loading ? (
+                                <ShimmerTitle line={1} gap={10} variant="primary" />
+                            ) : (
+                                videoInfo.title
+                            )}
+                        </motion.div>
                     </h3>
                     <div className="flex flex-col items-center">
-                        <p className="text-white mb-2 ">{videoInfo.title}</p>
-                        <img
-                            src={videoInfo.thumbnail}
-                            alt="Video Thumbnail"
-                            className="rounded-lg mb-2 w-full"
-                        />
+                        {loading ? (
+                            <ShimmerThumbnail height={200} rounded />
+                        ) : (
+                            <motion.img
+                                src={videoInfo.thumbnail}
+                                alt="Video Thumbnail"
+                                className="rounded-lg mb-2 w-full"
+                                whileHover={{ filter: 'brightness(1.1)' }}
+                                whileTap={{ filter: 'brightness(0.9)' }}
+                            />
+                        )}
                     </div>
                 </div>
-            )}
+            ) : null}
+
 
             {/* video and audio download options */}
-            <div className='flex flex-wrap md:flex-nowrap justify-center md:space-x-4'>
-                {videoFormats.length > 0 && (
-                    <div className='mt-5'>
-                        <h3 className='font-semibold text-xl my-2 text-center'>Video Formats:</h3>
-                        <ul className='space-y-2 items-center'>
-                            {videoFormats.map((format, index) => (
-                                <li className='flex justify-between text-[10px] border-indigo-600 border-separate border-[2px] round px-2 py-1 rounded-lg' key={index}>
-                                    <p>{format.qualityLabel} - {format.mimeType} {' '}</p>
-                                    <button className='px-3 py-2 rounded-lg bg-indigo-600' onClick={() => handleDownloadClick(format)}>
-                                        Download Now
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-                {audioFormats.length > 0 && (
-                    <div className='mt-5'>
-                        <h3 className='font-semibold text-xl my-2 text-center'>Audio Formats:</h3>
-                        <ul className='space-y-2 items-center'>
-                            {audioFormats.map((format, index) => (
-                                <li className='flex justify-between text-[10px] border-indigo-600 border-separate border-[2px] round px-2 py-1 rounded-lg' key={index}>
-                                    <p>{format.qualityLabel} - {format.mimeType} {' '}</p>
-                                    <button className='px-3 py-2 rounded-lg bg-indigo-600' onClick={() => handleDownloadClick(format)}>
-                                        Download Now
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+            <div className={`flex flex-wrap md:flex-nowrap justify-center md:space-x-4 ${loading ? 'opacity-0' : 'opacity-100 transition-opacity'}`}>
+                {showFormats && (
+                    <>
+                        {videoFormats.length > 0 && (
+                            <div className='mt-5'>
+                                <h3 className='font-semibold text-xl my-2 text-center'>Video Formats:</h3>
+                                <ul className='space-y-2 items-center'>
+                                    {videoFormats.map((format, index) => (
+                                        <li className='flex justify-between text-[10px] border-indigo-600 border-separate border-[2px] round px-2 py-1 rounded-lg' key={index}>
+                                            <p>{format.qualityLabel} - {format.mimeType} {' '}</p>
+                                            <button className='px-3 py-2 rounded-lg bg-indigo-600' onClick={() => handleDownloadClick(format)}>
+                                                Download Now
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                        {audioFormats.length > 0 && (
+                            <div className='mt-5'>
+                                <h3 className='font-semibold text-xl my-2 text-center'>Audio Formats:</h3>
+                                <ul className='space-y-2 items-center'>
+                                    {audioFormats.map((format, index) => (
+                                        <li className='flex justify-between text-[10px] border-indigo-600 border-separate border-[2px] round px-2 py-1 rounded-lg' key={index}>
+                                            <p>{format.qualityLabel} - {format.mimeType} {' '}</p>
+                                            <button className='px-3 py-2 rounded-lg bg-indigo-600' onClick={() => handleDownloadClick(format)}>
+                                                Download Now
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
 
