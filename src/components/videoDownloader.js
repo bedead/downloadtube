@@ -114,6 +114,19 @@ export default function VideoDownloader() {
                 </h1>
                 <p className="font-semibold text-center mt-2 md:mt-0">No bullshit youtube video and audio downloader</p>
             </div>
+            {/* supported url format note */}
+            <div className="border-[2px] border-separate border-indigo-600 p-5 rounded-lg ">
+                <h2 className="font-bold text-2xl text-indigo-600">Tips:</h2>
+                <ul>
+                    <li>
+                        Ensure the YouTube video URL is valid and in the correct format (e.g., https://www.youtube.com/watch?v=VIDEO_ID).
+                    </li>
+                    <li>
+                        If you encounter any issues, check for error messages and verify the video URL.
+                    </li>
+                </ul>
+            </div>
+            {/* url input */}
             <div className="p-2 w-full flex items-center justify-center relative">
                 <input
                     type="text"
