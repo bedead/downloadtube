@@ -11,6 +11,17 @@ function GuideComp() {
     return (
         <div className={`${styles.padding} min-h-screen md:px-96 space-y-10 text-left`} >
             <h1 className="font-bold text-3xl text-center">DownloadTube: YouTube Video Downloader Guide</h1>
+            <div className="border-[2px] border-separate border-red-600 p-5 rounded-lg ">
+                <h2 className="font-bold text-2xl text-red-600">Note :</h2>
+                <ul>
+                    <li>
+                        Ensure the YouTube video URL is valid and in the correct format (e.g., https://www.youtube.com/watch?v=VIDEO_ID,<br /> https://youtu.be/VIDEO_ID,<br /> https://www.youtube.com/embed/VIDEO_ID,<br /> https://www.youtube.com/watch?v=VIDEO_ID&feature=youtu.be,<br /> https://www.youtube.com/watch?v=VIDEO_ID&list=PLAYLIST_ID,<br /> https://www.youtube.com/v/VIDEO_ID,<br /> etc ).
+                    </li>
+                    <li>
+                        If you encounter any issues, check for error messages and verify the video URL.
+                    </li>
+                </ul>
+            </div>
             <div>
                 <h2 className="font-semibold text-2xl ">1. Visit the DownloadTube Website:</h2>
                 <p>Open your web browser and go to the DownloadTube website.</p>
@@ -42,17 +53,6 @@ function GuideComp() {
             <div>
                 <h2 className="font-semibold text-2xl ">8. Enjoy Your Downloaded Content:</h2>
                 <p>Once the download is complete, you can enjoy the video or audio file offline.</p>
-            </div>
-            <div className="border-[2px] border-separate border-indigo-600 p-5 rounded-lg ">
-                <h2 className="font-bold text-2xl text-indigo-600">Tips:</h2>
-                <ul>
-                    <li>
-                        Ensure the YouTube video URL is valid and in the correct format (e.g., https://www.youtube.com/watch?v=VIDEO_ID).
-                    </li>
-                    <li>
-                        If you encounter any issues, check for error messages and verify the video URL.
-                    </li>
-                </ul>
             </div>
         </div>
     )

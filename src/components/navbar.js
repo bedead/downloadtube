@@ -27,12 +27,13 @@ const NavBar = () => {
         <nav className="w-full flex p-10 fixed top-0 z-20 bg-gradient-to-b from-white to-transparent">
             <div className="w-full flex justify-between items-center mx-auto">
                 <h1 className="font-extrabold text-xl md:text-2xl">
-                    <Link href="/">
-                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                            DownloadTube&nbsp;
-                            <span className="text-gray-800 px-2 text-xl md:text-2xl text-center rounded-xl bg-white">
+                    <Link href="/" className='flex justify-between items-center '>
+                        <img width={46} height={46} src="/icon/android-chrome-192x192.png" alt="DownloadTube Logo" className="logo-class" />
+                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className='pl-2'>
+                            DownloadTube
+                            {/* <span className="text-gray-800 px-2 text-xl md:text-2xl text-center rounded-xl bg-white">
                                 BETA
-                            </span>
+                            </span> */}
                         </motion.div>
                     </Link>
                 </h1>

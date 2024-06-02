@@ -1,1 +1,3 @@
-Sitemap: https://downloadtube-iota.vercel.app//api/sitemap.xml
+User-agent: *
+Allow: /
+Sitemap: https://downloadtube-iota.vercel.app/api/sitemap.xml

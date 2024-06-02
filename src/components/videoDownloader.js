@@ -1,9 +1,22 @@
 // components/VideoDownloader.js
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ShimmerTitle, ShimmerThumbnail } from "react-shimmer-effects";
+
+const fetchVideoData = async (videoUrl, videoId) => {
+    const infoResponse = await fetch(`/api/youtubeinfo?videoUrl=${videoUrl}`);
+    if (!infoResponse.ok) throw new Error('Failed to fetch video info');
+
+    const formatsResponse = await fetch(`/api/youtubevideo?videoId=${videoId}`);
+    if (!formatsResponse.ok) throw new Error('Failed to fetch video download formats');
+
+    const videoInfo = await infoResponse.json();
+    const formatsData = await formatsResponse.json();
+
+    return { videoInfo, formatsData };
+};
 
 export default function VideoDownloader() {
     const [videoUrl, setVideoUrl] = useState('');
@@ -15,92 +28,55 @@ export default function VideoDownloader() {
     const [loading, setLoading] = useState(false);
     const [showFormats, setShowFormats] = useState(false);
 
-    const handleDownload = async () => {
+    const handleDownload = useCallback(async () => {
         try {
             setLoading(true);
-            const videoIdMatch = videoUrl.match(/[?&]v=([^&]+)/);
-
+            const videoIdMatch = videoUrl.match(/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
             if (!videoIdMatch) {
-                console.error('Invalid YouTube video URL');
                 setError('Invalid YouTube video URL');
                 setShowErrorModal(true);
                 return;
             }
-
             const videoId = videoIdMatch[1];
+            const { videoInfo, formatsData } = await fetchVideoData(videoUrl, videoId);
 
-            const response = await fetch(`/api/youtubevideo?videoId=${videoId}`);
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch video download Formats');
-            }
-
-            const responseVideoInfo = await fetch(`/api/youtubeinfo?videoUrl=${videoUrl}`);
-
-            if (!responseVideoInfo.ok) {
-                throw new Error('Failed to fetch video info');
-            }
-
-            const datavideoIndo = await responseVideoInfo.json();
-            setVideoInfo(datavideoIndo);
-
-            const data = await response.json();
-            setVideoFormats(data.videoFormats);
-            setAudioFormats(data.audioFormats);
-
+            setVideoInfo(videoInfo);
+            setVideoFormats(formatsData.videoFormats);
+            setAudioFormats(formatsData.audioFormats);
             setError(null);
-            setLoading(false);
-            setShowFormats(false); // Reset showFormats on each download
+            setShowFormats(false);
         } catch (error) {
-            console.error('Error fetching video info:', error);
-            setError('Error fetching video info');
+            setError(error.message);
             setShowErrorModal(true);
+        } finally {
             setLoading(false);
         }
-    };
+    }, [videoUrl]);
 
-    // Use useEffect to control the showFormats state after a delay
     useEffect(() => {
         if (videoInfo) {
-            const showFormatsTimeout = setTimeout(() => {
-                setShowFormats(true);
-            }, 1500);
-
+            const showFormatsTimeout = setTimeout(() => setShowFormats(true), 1500);
             return () => clearTimeout(showFormatsTimeout);
         }
     }, [videoInfo]);
 
-    const handleDownloadClick = (format) => {
+    const handleDownloadClick = useCallback((format) => {
         try {
             const { url, qualityLabel, container } = format;
-
-            // Create a temporary link element
             const downloadLink = document.createElement('a');
             downloadLink.href = url;
-            downloadLink.target = '_blank'
-
-            // Set the download attribute with a suggested file name
+            downloadLink.target = '_blank';
             downloadLink.download = `DownloadTube_${qualityLabel}_${container}.${container}`;
-
-            // Append the link to the document
             document.body.appendChild(downloadLink);
-
-            // Trigger the click event on the link
             downloadLink.click();
-
-            // Remove the link from the document
             document.body.removeChild(downloadLink);
-
             setError(null);
         } catch (error) {
-            console.error('Error initiating download:', error);
             setError('Error initiating download');
         }
-    };
+    }, []);
 
-    const closeErrorModal = () => {
-        setShowErrorModal(false);
-    };
+    const closeErrorModal = () => setShowErrorModal(false);
 
 
     return (
@@ -110,13 +86,13 @@ export default function VideoDownloader() {
             <div className="items-center p-5">
                 <h1 className="font-semibold text-4xl text-center flex justify-center space-x-2 items-center">DownloadTube
                     <span> {' '}</span>
-                    <span className='text-gray-800 px-1 text-2xl md:text-3xl text-center rounded-xl bg-white '>BETA</span>
+                    {/* <span className='text-gray-800 px-1 text-2xl md:text-3xl text-center rounded-xl bg-white '>BETA</span> */}
                 </h1>
                 <p className="font-semibold text-center mt-2 md:mt-0">No bullshit youtube video and audio downloader</p>
             </div>
             {/* supported url format note */}
-            <div className="border-[2px] border-separate border-indigo-600 p-5 rounded-lg ">
-                <h2 className="font-bold text-2xl text-indigo-600">Tips:</h2>
+            {/* <div className="border-[2px] border-separate border-red-600 p-3 rounded-lg ">
+                <h2 className="font-bold text-2xl text-red-600">Note:</h2>
                 <ul>
                     <li>
                         Ensure the YouTube video URL is valid and in the correct format (e.g., https://www.youtube.com/watch?v=VIDEO_ID).
@@ -125,7 +101,7 @@ export default function VideoDownloader() {
                         If you encounter any issues, check for error messages and verify the video URL.
                     </li>
                 </ul>
-            </div>
+            </div> */}
             {/* url input */}
             <div className="p-2 w-full flex items-center justify-center relative">
                 <input
