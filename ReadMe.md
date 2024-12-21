@@ -1,6 +1,6 @@
 # DownloadTube
 
-DownloadTube is a YouTube video downloader built with Next.js. It allows users to easily download videos and audio from YouTube in various formats and resolutions.
+DownloadTube is a Open source YouTube video downloader built with Next.js. It allows users to easily download videos and audio from YouTube in various formats and resolutions.
 
 ## Features
 
@@ -20,7 +20,7 @@ DownloadTube is a YouTube video downloader built with Next.js. It allows users t
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/downloadtube.git
+   git clone https://github.com/bedead/downloadtube.git
     ```
 
     ```bash
