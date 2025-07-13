@@ -5,6 +5,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ShimmerTitle, ShimmerThumbnail } from "react-shimmer-effects";
 
+function formatFileSize(sizeInKB) {
+    if (!sizeInKB || isNaN(sizeInKB)) return 'Unknown';
+    const sizeInMB = sizeInKB / 1024;
+    return `${sizeInMB.toFixed(2)} MB`;
+}
+
+
 const fetchVideoData = async (videoUrl, videoId) => {
     const infoResponse = await fetch(`/api/youtubeinfo?videoUrl=${videoUrl}`);
     if (!infoResponse.ok) throw new Error('Failed to fetch video info');
@@ -156,7 +163,7 @@ export default function VideoDownloader() {
                                 <ul className='space-y-2 items-center'>
                                     {videoFormats.map((format, index) => (
                                         <li className='flex justify-between text-[10px] border-indigo-600 border-separate border-[2px] round px-2 py-1 rounded-lg' key={index}>
-                                            <p>{format.qualityLabel} - {format.mimeType} {' '}</p>
+                                            <p>{format.format_note || 'Unknown'} - {formatFileSize(format.filesize)}{' '}</p>
                                             <button className='px-3 py-2 rounded-lg bg-indigo-600' onClick={() => handleDownloadClick(format)}>
                                                 Download Now
                                             </button>
@@ -171,7 +178,7 @@ export default function VideoDownloader() {
                                 <ul className='space-y-2 items-center'>
                                     {audioFormats.map((format, index) => (
                                         <li className='flex justify-between text-[10px] border-indigo-600 border-separate border-[2px] round px-2 py-1 rounded-lg' key={index}>
-                                            <p>{format.qualityLabel} - {format.mimeType} {' '}</p>
+                                            <p>{format.format_note || "Unknown"} - {formatFileSize(format.filesize)}{' '}</p>
                                             <button className='px-3 py-2 rounded-lg bg-indigo-600' onClick={() => handleDownloadClick(format)}>
                                                 Download Now
                                             </button>

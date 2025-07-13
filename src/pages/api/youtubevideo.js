@@ -1,5 +1,5 @@
 // pages/api/youtubevideo.js
-import ytdl from 'ytdl-core';
+import youtubedl from 'youtube-dl-exec';
 
 export default async function handler(req, res) {
     const { videoId } = req.query;
@@ -9,14 +9,23 @@ export default async function handler(req, res) {
             throw new Error('Invalid video ID');
         }
 
-        const info = await ytdl.getInfo(videoId);
+        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
-        const videoFormats = ytdl.filterFormats(info.formats, 'video');
-        const audioFormats = ytdl.filterFormats(info.formats, 'audio');
+        const info = await youtubedl(videoUrl, {
+            dumpSingleJson: true,
+            noWarnings: true,
+            noCheckCertificate: true,
+            preferFreeFormats: true,
+            youtubeSkipDashManifest: true,
+        });
+
+        // Separate video-only and audio-only formats
+        const videoFormats = info.formats.filter(f => f.vcodec !== 'none' && f.acodec === 'none');
+        const audioFormats = info.formats.filter(f => f.acodec !== 'none' && f.vcodec === 'none');
 
         res.status(200).json({ videoFormats, audioFormats });
     } catch (error) {
-        console.error('Error fetching video info:', error);
+        console.error('Error fetching video info:', error.stderr || error);
         res.status(500).json({ error: 'Error fetching video info' });
     }
 }
